@@ -15,7 +15,7 @@ measurements.txt: generator
 run: all measurements.txt
 	./main
 
-debug: CXXFLAGS += -g
+debug: CXXFLAGS += -g -pg
 debug: all
 
 clean:
