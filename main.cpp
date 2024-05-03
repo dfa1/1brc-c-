@@ -7,6 +7,8 @@
 #include <algorithm>
 
 int main() {
+	std::ios::sync_with_stdio(false);
+
 	std::ifstream infile("measurements.txt");
 	std::string line;
 	std::map<std::string, std::vector<float>> by_city;

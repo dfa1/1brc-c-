@@ -424,6 +424,8 @@ const std::vector<std::string> cities {
 };
 
 int main() {
+	std::ios::sync_with_stdio(false);
+
 	// great presentation from https://learn.microsoft.com/en-us/shows/goingnative-2013/rand-considered-harmful
 	std::mt19937 mt{ 42 }; // make this completely reproducible in another machine
 	std::uniform_int_distribution<> random_city{0, static_cast<int>(cities.size() - 1)}; // TODO: use std::sample
