@@ -6,6 +6,16 @@
 #include <string>
 #include <vector>
 
+template <typename T>
+struct xmax {
+  constexpr T operator()(const T& x, const T& y) { return std::max(x, y); }
+};
+
+template <typename T>
+struct xmin {
+  constexpr T operator()(const T& x, const T& y) { return std::min(x, y); }
+};
+
 int main() {
   std::ios::sync_with_stdio(false);
 
@@ -21,8 +31,10 @@ int main() {
     }
   }
   for (const auto& [city, temps] : by_city) {
-    const float max = *std::max_element(temps.cbegin(), temps.cend());
-    const float min = *std::min_element(temps.cbegin(), temps.cend());
+    const float min =
+        std::reduce(temps.cbegin(), temps.cend(), 10000, xmin<float>());
+    const float max =
+        std::reduce(temps.cbegin(), temps.cend(), -10000, xmax<float>());
     const float avg = std::reduce(temps.cbegin(), temps.cend()) / temps.size();
     std::cout << city << ";" << min << ";" << max << ";" << avg << "\n";
   }
