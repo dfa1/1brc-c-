@@ -433,6 +433,6 @@ int main() {
 	std::cout << "creating " << lines << " lines ... ☕ time" << std::endl;
 
 	for (size_t i = 0; i < lines; i++) {
-		outfile << cities[random_city(mt)] << ";" << std::roundf(random_temp(mt) * 10 ) / 10 << std::endl;
+		outfile << cities[random_city(mt)] << ";" << std::roundf(random_temp(mt) * 10 ) / 10 << "\n";
 	}
 }
