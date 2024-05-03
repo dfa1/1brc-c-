@@ -18,7 +18,10 @@ run: all measurements.txt
 debug: CXXFLAGS += -g -pg
 debug: all
 
+format:
+	clang-format --style=Google -i *.cpp
+
 clean:
 	@rm -f main generator measurements.txt gmon.out
 
-.PHONY: clean run
+.PHONY: clean run format

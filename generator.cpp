@@ -1,13 +1,13 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <random>
 #include <cmath>
+#include <fstream>
+#include <iostream>
+#include <random>
+#include <string>
+#include <vector>
 
 constexpr size_t lines = 1'000;
 
-const std::vector<std::string> cities {
+const std::vector<std::string> cities{
     "Abha",
     "Abidjan",
     "Abéché",
@@ -424,17 +424,20 @@ const std::vector<std::string> cities {
 };
 
 int main() {
-	std::ios::sync_with_stdio(false);
+  std::ios::sync_with_stdio(false);
 
-	// great presentation from https://learn.microsoft.com/en-us/shows/goingnative-2013/rand-considered-harmful
-	std::mt19937 mt{ 42 }; // make this completely reproducible in another machine
-	std::uniform_int_distribution<> random_city{0, static_cast<int>(cities.size() - 1)}; // TODO: use std::sample
-	std::normal_distribution<> random_temp{0, 40};
-	std::ofstream outfile("measurements.txt");
+  // great presentation from
+  // https://learn.microsoft.com/en-us/shows/goingnative-2013/rand-considered-harmful
+  std::mt19937 mt{42};  // make this completely reproducible in another machine
+  std::uniform_int_distribution<> random_city{
+      0, static_cast<int>(cities.size() - 1)};  // TODO: use std::sample
+  std::normal_distribution<> random_temp{0, 40};
+  std::ofstream outfile("measurements.txt");
 
-	std::cout << "creating " << lines << " lines ... ☕ time" << std::endl;
+  std::cout << "creating " << lines << " lines ... ☕ time" << std::endl;
 
-	for (size_t i = 0; i < lines; i++) {
-		outfile << cities[random_city(mt)] << ";" << std::roundf(random_temp(mt) * 10 ) / 10 << "\n";
-	}
+  for (size_t i = 0; i < lines; i++) {
+    outfile << cities[random_city(mt)] << ";"
+            << std::roundf(random_temp(mt) * 10) / 10 << "\n";
+  }
 }
