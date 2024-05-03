@@ -24,5 +24,4 @@ int main() {
 		float min = *std::min_element(temps.cbegin(), temps.cend());
 		std::cout << city  << "[" << min << ".." << max  << "]\n";
 	}
-	return 0;
 }
