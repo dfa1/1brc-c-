@@ -19,6 +19,6 @@ debug: CXXFLAGS += -g -pg
 debug: all
 
 clean:
-	@rm -f main generator measurements.txt
+	@rm -f main generator measurements.txt gmon.out
 
 .PHONY: clean run
