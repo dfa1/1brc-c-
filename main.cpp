@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <numeric>
 #include <string>
 #include <vector>
@@ -20,7 +20,7 @@ int main() {
 
   std::ifstream infile("measurements.txt");
   std::string line;
-  std::map<std::string, std::vector<float>> by_city;
+  std::unordered_map<std::string, std::vector<float>> by_city;
   while (std::getline(infile, line)) {
     std::size_t semicolon = line.find_first_of(';');
     if (semicolon != std::string::npos) {
