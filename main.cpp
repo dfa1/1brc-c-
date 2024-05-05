@@ -1,9 +1,9 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <unordered_map>
 #include <numeric>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "fast_float.h"
@@ -14,6 +14,15 @@ inline float parse_float(const char *start, const char *end) {
   // TODO: check for errors if (result.ec != std::errc())
   return result;
 }
+
+struct Result {
+  std::string city;
+  float min;
+  float max;
+  float avg;
+
+  bool operator<(const Result &that) { return this->city < that.city; }
+};
 
 int main() {
   std::ios::sync_with_stdio(false);
@@ -31,12 +40,25 @@ int main() {
       by_city[city].push_back(temp);
     }
   }
+  std::vector<Result> sorted_by_city;
+  sorted_by_city.reserve(by_city.size());
   for (const auto &[city, temps] : by_city) {
+    Result result;
+
+    result.city = city;
     // it is ok to use * without checking as iterator is scanning over city with
     // at least 1 value
-    const float min = *std::min_element(temps.cbegin(), temps.cend());
-    const float max = *std::max_element(temps.cbegin(), temps.cend());
-    const float avg = std::reduce(temps.cbegin(), temps.cend()) / temps.size();
-    std::cout << city << ";" << min << ";" << max << ";" << avg << "\n";
+    result.min = *std::min_element(temps.cbegin(), temps.cend());
+    result.max = *std::max_element(temps.cbegin(), temps.cend());
+    result.avg = std::reduce(temps.cbegin(), temps.cend()) / temps.size();
+
+    sorted_by_city.push_back(result);
+  }
+
+  std::sort(sorted_by_city.begin(), sorted_by_city.end());
+
+  for (const Result &result : sorted_by_city) {
+    std::cout << result.city << ";" << result.min << ";" << result.max << ";"
+              << result.avg << "\n";
   }
 }
