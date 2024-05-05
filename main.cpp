@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <execution>
 #include <fstream>
 #include <iostream>
 #include <numeric>
@@ -8,8 +7,6 @@
 #include <vector>
 
 #include "fast_float.h"
-
-constexpr auto execution_policy = std::execution::par_unseq;
 
 inline float parse_float(const char *start, const char *end) {
   float result;
@@ -37,23 +34,28 @@ int main() {
     std::size_t semicolon = line.find_first_of(';');
     if (semicolon != std::string::npos) {
       const std::string city = line.substr(0, semicolon);
-      const float temp =
-          parse_float(line.data() + semicolon + 1, line.data() + line.size());
-
-      by_city[city].push_back(temp);
+      const float value = parse_float(line.data() + semicolon + 1, line.data() + line.size());
+      by_city[city].push_back(value);
     }
   }
   std::vector<Result> sorted_by_city;
   sorted_by_city.reserve(by_city.size());
   for (const auto &[city, temps] : by_city) {
-    Result result;
+    float min = 99999;
+    float max = -99999;
+    float sum = 0;
 
+    for (const auto &temp : temps) {
+      min = std::min(min, temp);
+      max = std::max(max, temp);
+      sum += temp;
+    }
+
+    Result result;
     result.city = city;
-    // it is ok to use * without checking as iterator is scanning over city with
-    // at least 1 value
-    result.min = *std::min_element(execution_policy, temps.cbegin(), temps.cend());
-    result.max = *std::max_element(execution_policy, temps.cbegin(), temps.cend());
-    result.avg = std::reduce(execution_policy, temps.cbegin(), temps.cend()) / temps.size();
+    result.min = min;
+    result.max = max;
+    result.avg = sum / temps.size();
 
     sorted_by_city.push_back(result);
   }
