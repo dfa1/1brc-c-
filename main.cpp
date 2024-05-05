@@ -6,6 +6,15 @@
 #include <string>
 #include <vector>
 
+#include "fast_float.h"
+
+inline float parse_float(const char *start, const char *end) {
+  float result;    
+  fast_float::from_chars(start, end, result);
+  // TODO: check for errors if (result.ec != std::errc()) 
+  return result;
+}
+
 int main() {
   std::ios::sync_with_stdio(false);
 
@@ -16,7 +25,8 @@ int main() {
     std::size_t semicolon = line.find_first_of(';');
     if (semicolon != std::string::npos) {
       const std::string city = line.substr(0, semicolon);
-      const float temp = std::stof(line.substr(semicolon + 1));
+      const float temp = parse_float(line.data() + semicolon + 1, line.data() + line.size());
+
       by_city[city].push_back(temp);
     }
   }
@@ -29,3 +39,4 @@ int main() {
     std::cout << city << ";" << min << ";" << max << ";" << avg << "\n";
   }
 }
+
