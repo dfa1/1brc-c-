@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-constexpr size_t lines = 1'000;
+constexpr size_t lines = 1'000'000'000;
 
 const std::vector<std::string> cities{
     "Abha",
