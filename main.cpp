@@ -9,9 +9,9 @@
 #include "fast_float.h"
 
 inline float parse_float(const char *start, const char *end) {
-  float result;    
+  float result;
   fast_float::from_chars(start, end, result, fast_float::chars_format::fixed);
-  // TODO: check for errors if (result.ec != std::errc()) 
+  // TODO: check for errors if (result.ec != std::errc())
   return result;
 }
 
@@ -25,12 +25,13 @@ int main() {
     std::size_t semicolon = line.find_first_of(';');
     if (semicolon != std::string::npos) {
       const std::string city = line.substr(0, semicolon);
-      const float temp = parse_float(line.data() + semicolon + 1, line.data() + line.size());
+      const float temp =
+          parse_float(line.data() + semicolon + 1, line.data() + line.size());
 
       by_city[city].push_back(temp);
     }
   }
-  for (const auto& [city, temps] : by_city) {
+  for (const auto &[city, temps] : by_city) {
     // it is ok to use * without checking as iterator is scanning over city with
     // at least 1 value
     const float min = *std::min_element(temps.cbegin(), temps.cend());
@@ -39,4 +40,3 @@ int main() {
     std::cout << city << ";" << min << ";" << max << ";" << avg << "\n";
   }
 }
-

@@ -19,7 +19,7 @@ debug: CXXFLAGS += -g -pg
 debug: all
 
 format:
-	clang-format --style=Google -i *.cpp
+	clang-format --style=Google -i *.cpp *.h
 
 clean:
 	@rm -f main generator measurements.txt gmon.out
