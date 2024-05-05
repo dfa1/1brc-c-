@@ -10,7 +10,7 @@
 
 inline float parse_float(const char *start, const char *end) {
   float result;    
-  fast_float::from_chars(start, end, result);
+  fast_float::from_chars(start, end, result, fast_float::chars_format::fixed);
   // TODO: check for errors if (result.ec != std::errc()) 
   return result;
 }
