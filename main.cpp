@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <execution>
 #include <fstream>
 #include <iostream>
 #include <numeric>
@@ -7,6 +8,8 @@
 #include <vector>
 
 #include "fast_float.h"
+
+constexpr auto execution_policy = std::execution::par_unseq;
 
 inline float parse_float(const char *start, const char *end) {
   float result;
@@ -48,9 +51,9 @@ int main() {
     result.city = city;
     // it is ok to use * without checking as iterator is scanning over city with
     // at least 1 value
-    result.min = *std::min_element(temps.cbegin(), temps.cend());
-    result.max = *std::max_element(temps.cbegin(), temps.cend());
-    result.avg = std::reduce(temps.cbegin(), temps.cend()) / temps.size();
+    result.min = *std::min_element(execution_policy, temps.cbegin(), temps.cend());
+    result.max = *std::max_element(execution_policy, temps.cbegin(), temps.cend());
+    result.avg = std::reduce(execution_policy, temps.cbegin(), temps.cend()) / temps.size();
 
     sorted_by_city.push_back(result);
   }
