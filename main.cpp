@@ -71,12 +71,12 @@ class MemorySegment {
  public:
   MemorySegment(int fd) {
     struct stat statbuf;
-    if (fstat(fd, &statbuf) == -1) {
+    if (::fstat(fd, &statbuf) == -1) {
       throw std::runtime_error("Error getting file size");
     }
     size_ = statbuf.st_size;
 
-    data_ = mmap(nullptr, size_, PROT_READ, MAP_SHARED, fd, 0);
+    data_ = ::mmap(nullptr, size_, PROT_READ, MAP_SHARED, fd, 0);
     if (data_ == MAP_FAILED) {
       throw std::runtime_error("Error mapping file");
     }
@@ -102,8 +102,7 @@ int main() {
   while (current.size() > 0) {
     const auto newline = current.find_first_of('\n');
     // Handle the case where the last line doesn't have a newline
-    const auto size =
-        newline != std::string_view::npos ? newline : current.size();
+    const auto size = newline != std::string::npos ? newline : current.size();
     // Extract the line (excluding newline character)
     const std::string_view line = current.substr(0, size);
     // Parse the city;temperature

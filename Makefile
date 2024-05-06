@@ -24,7 +24,7 @@ format:
 
 TIMES ?= 5
 
-benchmark: all
+benchmark: all measurements.txt
 	for i in {1..${TIMES}}; do time ./main; done
 
 clean:
