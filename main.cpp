@@ -31,10 +31,11 @@ int main() {
   std::string line;
   std::unordered_map<std::string, std::vector<float>> by_city;
   while (std::getline(infile, line)) {
-    std::size_t semicolon = line.find_first_of(';');
+    const std::size_t semicolon = line.find_first_of(';');
     if (semicolon != std::string::npos) {
       const std::string city = line.substr(0, semicolon);
-      const float value = parse_float(line.data() + semicolon + 1, line.data() + line.size());
+      const float value =
+          parse_float(line.data() + semicolon + 1, line.data() + line.size());
       by_city[city].push_back(value);
     }
   }
