@@ -1,5 +1,6 @@
-CXX      := -c++
+CXX      := g++
 CXXFLAGS := -std=c++20 -pedantic-errors -W -Wall -Wextra -Werror -O3 -march=native
+SHELL    := bash
 
 all: main generator
 
@@ -21,7 +22,12 @@ debug: all
 format:
 	clang-format --style=Google -i *.cpp *.h
 
+TIMES ?= 5
+
+benchmark: all
+	for i in {1..${TIMES}}; do time ./main; done
+
 clean:
 	@rm -f main generator measurements.txt gmon.out
 
-.PHONY: clean run format
+.PHONY: clean run format benchmark
