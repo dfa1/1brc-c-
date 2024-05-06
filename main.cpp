@@ -31,16 +31,16 @@ class Temperature {
   int count_ = 0;
 
  public:
-  void merge(const float value) {
+  void merge(const float value) noexcept {
     min_ = std::min(value, min_);
     max_ = std::max(value, max_);
     sum_ += value;
     count_ += 1;
   }
 
-  float min() const { return min_; }
-  float max() const { return max_; }
-  float avg() const { return sum_ / count_; }
+  float min() const noexcept { return min_; }
+  float max() const noexcept { return max_; }
+  float avg() const noexcept { return sum_ / count_; }
 };
 
 // hide some specific UNIX code + RAII for open/close
@@ -60,7 +60,7 @@ class ScopedFile {
   ScopedFile(const ScopedFile &) = delete;
   ScopedFile &operator=(const ScopedFile &) = delete;
 
-  int fd() const { return fd_; }
+  int fd() const noexcept { return fd_; }
 };
 
 // hide some specific UNIX code + RAII for mmap/munmap
@@ -87,7 +87,7 @@ class MemorySegment {
   MemorySegment(const MemorySegment &) = delete;
   MemorySegment &operator=(const MemorySegment &) = delete;
 
-  const std::string_view view() const {
+  const std::string_view view() const noexcept {
     return std::string_view(static_cast<const char *>(data_), size_);
   }
 };
