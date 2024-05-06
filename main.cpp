@@ -14,11 +14,14 @@
 
 #include "fast_float.h"
 
-inline float parse_float(const char *start, const char *end) {
-  float result;
-  fast_float::from_chars(start, end, result, fast_float::chars_format::fixed);
-  // TODO: check for errors if (result.ec != std::errc())
-  return result;
+inline float parse_float(const std::string_view input) {
+  float value;
+  auto result = fast_float::from_chars(input.begin(), input.end(), value,
+                                       fast_float::chars_format::fixed);
+  if (result.ec != std::errc()) {
+    throw std::runtime_error("cannot parse float");
+  }
+  return value;
 }
 
 class Temperature {
@@ -107,8 +110,9 @@ int main() {
     const auto semicolon = line.find_first_of(';');
     if (semicolon != std::string_view::npos) {
       const std::string city(line, 0, semicolon);
-      const float value =
-          parse_float(line.data() + semicolon + 1, line.data() + line.size());
+      const std::string_view temperature(line.data() + semicolon + 1,
+                                         line.data() + line.size());
+      const float value = parse_float(temperature);
       by_city[city].merge(value);
     } else {
       throw std::runtime_error("Cannot parse line");
