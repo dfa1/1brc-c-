@@ -1,5 +1,5 @@
 CXX      := g++
-CXXFLAGS := -std=c++23 -pedantic-errors -W -Wall -Wextra -Werror -O3 -march=native
+CXXFLAGS := -std=c++20 -pedantic-errors -W -Wall -Wextra -Werror -O3 -march=native
 SHELL    := bash
 
 all: main generator
@@ -20,7 +20,7 @@ debug: CXXFLAGS += -g -pg
 debug: all
 
 format:
-	clang-format --style=Google -i *.cpp
+	clang-format --style=Google -i *.cpp *.h
 
 TIMES ?= 5
 

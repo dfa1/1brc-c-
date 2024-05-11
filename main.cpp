@@ -5,7 +5,6 @@
 #include <unistd.h>
 
 #include <algorithm>
-#include <charconv>
 #include <iostream>
 #include <map>
 #include <numeric>
@@ -13,11 +12,12 @@
 #include <string_view>
 #include <unordered_map>
 
+#include "fast_float.h"
 
 inline float parse_float(const std::string_view input) {
   float value;
-  auto result = std::from_chars(input.begin(), input.end(), value,
-                                       std::chars_format::fixed);
+  auto result = fast_float::from_chars(input.begin(), input.end(), value,
+                                       fast_float::chars_format::fixed);
   if (result.ec != std::errc()) {
     throw std::runtime_error("cannot parse float");
   }
