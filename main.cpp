@@ -75,7 +75,7 @@ class MemorySegment {
     }
     size_ = statbuf.st_size;
 
-    data_ = ::mmap(nullptr, size_, PROT_READ, MAP_SHARED, fd, 0);
+    data_ = ::mmap(nullptr, size_, PROT_READ, MAP_PRIVATE, fd, 0);
     if (data_ == MAP_FAILED) {
       throw std::runtime_error("Error mapping file");
     }
