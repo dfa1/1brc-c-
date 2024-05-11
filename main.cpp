@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <iostream>
 #include <map>
-#include <numeric>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -38,9 +37,9 @@ class Temperature {
     count_ += 1;
   }
 
-  float min() const noexcept { return min_; }
-  float max() const noexcept { return max_; }
-  float avg() const noexcept { return sum_ / count_; }
+  [[nodiscard]] float min() const noexcept { return min_; }
+  [[nodiscard]] float max() const noexcept { return max_; }
+  [[nodiscard]] float avg() const noexcept { return sum_ / (float) count_; }
 };
 
 // hide some specific UNIX code + RAII for open/close
@@ -60,7 +59,7 @@ class ScopedFile {
   ScopedFile(const ScopedFile &) = delete;
   ScopedFile &operator=(const ScopedFile &) = delete;
 
-  int fd() const noexcept { return fd_; }
+  [[nodiscard]] int fd() const noexcept { return fd_; }
 };
 
 // hide some specific UNIX code + RAII for mmap/munmap
@@ -69,8 +68,8 @@ class MemorySegment {
   size_t size_;
 
  public:
-  MemorySegment(int fd) {
-    struct stat statbuf;
+  explicit MemorySegment(int fd) {
+    struct stat statbuf{};
     if (::fstat(fd, &statbuf) == -1) {
       throw std::runtime_error("Error getting file size");
     }
@@ -87,8 +86,8 @@ class MemorySegment {
   MemorySegment(const MemorySegment &) = delete;
   MemorySegment &operator=(const MemorySegment &) = delete;
 
-  const std::string_view view() const noexcept {
-    return std::string_view(static_cast<const char *>(data_), size_);
+  [[nodiscard]] std::string_view view() const noexcept {
+    return {static_cast<const char *>(data_), size_};
   }
 };
 
@@ -99,7 +98,7 @@ int main() {
   std::unordered_map<std::string, Temperature> by_city;
   std::string_view current = segment.view();
 
-  while (current.size() > 0) {
+  while (!current.empty()) {
     const auto newline = current.find_first_of('\n');
     // Handle the case where the last line doesn't have a newline
     const auto size = newline != std::string::npos ? newline : current.size();
