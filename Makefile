@@ -1,5 +1,5 @@
 CXX      := g++
-CXXFLAGS := -std=c++20 -pedantic-errors -W -Wall -Wextra -Werror -O3 -march=native
+CXXFLAGS := -std=c++20 -pedantic-errors -W -Wall -Wextra -Werror -O3 
 SHELL    := bash
 
 all: main generator

@@ -110,7 +110,7 @@ int main() {
     if (semicolon != std::string_view::npos) {
       const std::string city(line, 0, semicolon);
       const std::string_view temperature(line.data() + semicolon + 1,
-                                         line.data() + line.size());
+                                         line.size() -1 - city.size());
       const float value = parse_float(temperature);
       by_city[city].merge(value);
     } else {
